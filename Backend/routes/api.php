@@ -10,4 +10,5 @@ Route::prefix('mitrans')->group(function() {
 
 Route::prefix('order')->group(function () {
     Route::get('', [OrderController::class, 'getOrder']);
+    Route::post('', [OrderController::class, 'insertOrder']);
 });

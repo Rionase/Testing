@@ -10,6 +10,8 @@ class Order extends Model
 
     protected $fillable = [
         'order_id',
-        'gross_ammount'
+        'gross_ammount',
+        'customer_name',
+        'keterangan'
     ];
 }
