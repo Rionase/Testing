@@ -7,7 +7,7 @@
         </div>
     </header>
 
-    <main>
+    <main class="main-container">
         <RouterView />
     </main>
 </template>
@@ -64,5 +64,9 @@ body {
     color: #42b983;
     background-color: #e8f5e9;
     font-weight: bold;
+}
+
+.main-container {
+    margin: 50px;
 }
 </style>
