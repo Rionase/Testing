@@ -1,8 +1,11 @@
+<script setup>
+</script>
 <template>
     <header class="navbar">
         <div class="container">
             <nav>
                 <RouterLink to="/order" class="nav-link">List Order</RouterLink>
+                <RouterLink to="/order/add" class="nav-link">Add Order</RouterLink>
             </nav>
         </div>
     </header>
