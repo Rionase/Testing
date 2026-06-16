@@ -1,11 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import SnapPopUpPage from '../views/SnapPopUpPage.vue'
+import Order from "../views/Order.vue";
 
 const routes = [
     {
-        path: '/snap-pop-up',
-        name: 'snap-pop-up',
-        component: SnapPopUpPage
+        path: '/order',
+        name: 'order',
+        component: Order,
     }
 ]
 

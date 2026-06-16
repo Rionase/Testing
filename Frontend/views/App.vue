@@ -2,7 +2,7 @@
     <header class="navbar">
         <div class="container">
             <nav>
-                <RouterLink to="/snap-pop-up" class="nav-link">Snap Pop Up Page</RouterLink>
+                <RouterLink to="/order" class="nav-link">List Order</RouterLink>
             </nav>
         </div>
     </header>
