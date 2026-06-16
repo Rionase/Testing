@@ -23,10 +23,8 @@ class InsertOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'order_id' => [ 'required', 'string', 'max:50' ],
             'gross_ammount' => [ 'required', 'int', 'min:1' ],
-            'customer_name' => [ 'required', 'string', 'max:64' ],
-            'keterangan' => [ 'required', 'string', 'max:255' ],
+            'keterangan' => [ 'required', 'string', 'max:256' ],
         ];
     }
 }

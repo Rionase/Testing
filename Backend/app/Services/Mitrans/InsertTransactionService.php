@@ -32,7 +32,7 @@ class InsertTransactionService
 
             if ($response->failed()) {
                 throw new BaseException(
-                    message: $response->json() ?? 'Terjadi kesalahan pada server Midtrans.',
+                    message: $response->json()['error_messages'][0] ?? 'Terjadi kesalahan pada server Midtrans.',
                     code: $response->status()
                 );
             };

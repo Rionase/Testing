@@ -4,30 +4,23 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 
 /**
  * @property int $id
  * @property int $gross_ammount
  * @property string $keterangan
- * @property int $id_status_order
+ * @property int $id_order_status
  * @property Carbon $created_at
  * @property Carbon $updated_at
- * @property Carbon $deleted_at
  */
-class Order extends Model
+class OrderStatus extends Model
 {
-    use SoftDeletes;
-
     protected $table = 'order';
 
     protected $fillable = [
-        'gross_ammount',
-        'keterangan',
-        'id_status_order',
+        'nama',
         'created_at',
         'updated_at',
-        'deleted_at',
     ];
 }

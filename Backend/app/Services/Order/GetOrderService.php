@@ -11,7 +11,16 @@ class GetOrderService
 {
     public function handle(GetOrderRequest $request): JsonResponse
     {
-        $list_order = Order::query()->get();
+        $list_order = Order::query()
+            ->join('status_order', 'status_order.id', 'order.id_status_order')
+            ->select([
+                'order.id AS id_order',
+                'order.gross_ammount',
+                'order.keterangan',
+                'status_order.id AS id_status_order',
+                'status_order.nama AS nama_status_order',
+            ])
+            ->get();
 
         return ResponseUtil::success(data: $list_order);
     }

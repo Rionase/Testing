@@ -13,52 +13,30 @@ use Throwable;
 
 class InsertOrderService
 {
+    /**
+     * @throws Throwable
+     */
     public function handle(InsertOrderRequest $request): JsonResponse
     {
         $connection = DB::connection('mysql');
         $connection->beginTransaction();
 
         try {
-            $order_id = $request->validated('order_id');
             $gross_ammount = $request->validated('gross_ammount');
             $keterangan = $request->validated('keterangan');
 
-            Order::query()->create([
-                'order_id' => $order_id,
+            $order = Order::query()->create([
                 'gross_ammount' => $gross_ammount,
-                'keterangan' => $keterangan
+                'keterangan' => $keterangan,
+                'id_status_order' => 1, // PAYMENT-PENDING
             ]);
-
-            $mitrans_auth_token = 'Basic ' . base64_encode( env('MITRANS_SERVER_KEY') . ':' );
-
-            $response = Http::withHeaders([
-                'Accept' => 'application/json',
-                'Content-Type'  => 'application/json',
-                'Authorization' => $mitrans_auth_token
-            ])->withoutVerifying() // DELETE ON PRODUCTION
-            ->post('https://app.sandbox.midtrans.com/snap/v1/transactions', [
-                'transaction_details' => [
-                    'order_id'     => $order_id,
-                    'gross_amount' => $gross_ammount
-                ]
-            ]);
-
-            if ($response->failed()) {
-                throw new BaseException(
-                    message: $response->json() ?? 'Terjadi kesalahan pada server Midtrans.',
-                    code: $response->status()
-                );
-            };
-
-            $data = $response->json();
 
             $connection->commit();
 
             return ResponseUtil::success(
-                data: $data,
-                message: 'Berhasil memmbuat order.'
+                data: [ 'order_id' => $order->id ],
+                message: 'Berhasil membuat order.'
             );
-
 
         } catch (Throwable $throwable) {
             $connection->rollBack();
