@@ -21,7 +21,7 @@
                         <td>{{ order.nama_status_order }}</td>
                         <td class="text-center">
                             <button
-                                v-if="order.nama_status_order === 'PAYMENT-PENDING'"
+                                v-if="order.midtrans_payment_status === 'pending'"
                                 @click="handlePay(order.id_order)"
                                 class="btn-pay"
                             >

@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int $id
  * @property int $gross_ammount
  * @property string $keterangan
- * @property int $id_status_order
+ * @property string $midtrans_payment_status
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property Carbon $deleted_at
@@ -25,7 +25,7 @@ class Order extends Model
     protected $fillable = [
         'gross_ammount',
         'keterangan',
-        'id_status_order',
+        'midtrans_payment_status',
         'created_at',
         'updated_at',
         'deleted_at',

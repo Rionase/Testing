@@ -1,21 +1,9 @@
-CREATE TABLE status_order (
-    id INTEGER PRIMARY KEY AUTO_INCREMENT,
-    nama VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
-
-INSERT INTO status_order (id, nama, created_at, updated_at) VALUES
-( 1, 'PAYMENT-PENDING', NOW(), NOW() ),
-( 2, 'PAYMENT-COMPLETED', NOW(), NOW() );
-
 CREATE TABLE `order` (
     id INTEGER PRIMARY KEY AUTO_INCREMENT,
     gross_ammount INTEGER NOT NULL,
     keterangan VARCHAR(256) NOT NULL,
-    id_status_order INT NOT NULL,
+    midtrans_payment_status VARCHAR(64) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    deleted_at TIMESTAMP NULL,
-    CONSTRAINT fk_order_status_order FOREIGN KEY (id_status_order) REFERENCES `order`(id) ON DELETE RESTRICT ON UPDATE RESTRICT
+    deleted_at TIMESTAMP NULL
 );
