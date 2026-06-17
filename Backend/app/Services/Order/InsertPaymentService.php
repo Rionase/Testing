@@ -41,8 +41,6 @@ class InsertPaymentService
                 ]
             ]);
 
-            $connection->commit();
-
             if ($response->failed()) {
                 throw new BaseException(
                     message: $response->json()['error_messages'][0] ?? 'Terjadi kesalahan pada server Midtrans.',
@@ -51,6 +49,8 @@ class InsertPaymentService
             };
 
             $data = $response->json();
+            $connection->commit();
+
             return response()->json([
                 'message' => 'Berhasil meng-inisiasi payment midtrans',
                 'data'=> $data

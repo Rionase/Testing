@@ -10,6 +10,7 @@
                         <th>Gross Amount</th>
                         <th>Keterangan</th>
                         <th>Status</th>
+                        <th>Payment Time</th>
                         <th class="text-center">Aksi</th>
                     </tr>
                 </thead>
@@ -19,6 +20,7 @@
                         <td>{{ order.gross_ammount }}</td>
                         <td>{{ order.keterangan }}</td>
                         <td>{{ order.midtrans_payment_status }}</td>
+                        <td>{{ order.midtrans_payment_status == 'capture' || order.midtrans_payment_status == 'settlement' ? order.midtrans_payment_time : '-' }}</td>
                         <td class="text-center">
                             <button
                                 v-if="order.midtrans_payment_status === 'pending'"

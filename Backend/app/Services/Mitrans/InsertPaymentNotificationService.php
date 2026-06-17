@@ -21,9 +21,11 @@ class InsertPaymentNotificationService
         try {
             $order_id = $request->validated('order_id');
             $transaction_status = $request->validated('transaction_status');
+            $transaction_time = $request->validated('transaction_time');
 
             Order::query()->find($order_id)->update([
                 'midtrans_payment_status' => $transaction_status,
+                'midtrans_payment_time' => $transaction_time
             ]);
 
             return ResponseUtil::success(message: 'berhasil');

@@ -28,7 +28,8 @@ class InsertOrderService
             $order = Order::query()->create([
                 'gross_ammount' => $gross_ammount,
                 'keterangan' => $keterangan,
-                'midtrans_payment_status' => 'pending'
+                'midtrans_payment_status' => 'pending',
+                'midtrans_payment_time' => null,
             ]);
 
             $connection->commit();

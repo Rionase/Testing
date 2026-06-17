@@ -3,6 +3,7 @@ CREATE TABLE `order` (
     gross_ammount INTEGER NOT NULL,
     keterangan VARCHAR(256) NOT NULL,
     midtrans_payment_status VARCHAR(64) NOT NULL,
+    midtrans_payment_time TIMESTAMP NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP NULL

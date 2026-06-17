@@ -16,7 +16,8 @@ class GetOrderService
                 'order.id AS id_order',
                 'order.gross_ammount',
                 'order.keterangan',
-                'order.midtrans_payment_status'
+                'order.midtrans_payment_status',
+                'order.midtrans_payment_time'
             ])
             ->get();
 
