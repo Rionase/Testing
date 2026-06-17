@@ -8,6 +8,7 @@ use App\Http\Requests\Mitrans\InsertTransactionRequest;
 use App\Models\Order;
 use App\Utils\ResponseUtil;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 use Throwable;
 
 class InsertPaymentNotificationService
@@ -25,7 +26,7 @@ class InsertPaymentNotificationService
                 'midtrans_payment_status' => $transaction_status,
             ]);
 
-            return ResponseUtil::success(message: 'Berhasil mengupdate status pembayaran');
+            return ResponseUtil::success(message: 'berhasil');
 
         } catch (Throwable $throwable) {
             throw new BaseException(message: $throwable->getMessage(), code: $throwable->getCode());

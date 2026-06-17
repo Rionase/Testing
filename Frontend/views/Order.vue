@@ -18,7 +18,7 @@
                         <td>{{ order.id_order }}</td>
                         <td>{{ order.gross_ammount }}</td>
                         <td>{{ order.keterangan }}</td>
-                        <td>{{ order.nama_status_order }}</td>
+                        <td>{{ order.midtrans_payment_status }}</td>
                         <td class="text-center">
                             <button
                                 v-if="order.midtrans_payment_status === 'pending'"
