@@ -32,6 +32,7 @@ class InsertPaymentNotificationRequest extends FormRequest
             "transaction_id" => [ "required", "string" ],
             "transaction_time" => [ "required", "date_format:Y-m-d H:i:s" ],
             "transaction_status" => [ "required", "string" ],
+            "expiry_time" => [ "required", "date_format:Y-m-d H:i:s" ],
         ];
     }
 

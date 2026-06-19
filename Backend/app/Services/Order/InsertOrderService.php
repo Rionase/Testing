@@ -28,8 +28,12 @@ class InsertOrderService
             $order = Order::query()->create([
                 'gross_ammount' => $gross_ammount,
                 'keterangan' => $keterangan,
-                'midtrans_payment_status' => 'pending',
-                'midtrans_payment_time' => null,
+                'status' => null,
+                'snap_token' => null,
+                'snap_redirect_url' => null,
+                'payment_time' => null,
+                'expired_at' => null,
+                'snap_created_at' => null
             ]);
 
             $connection->commit();

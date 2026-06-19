@@ -2,9 +2,15 @@ CREATE TABLE `order` (
     id INTEGER PRIMARY KEY AUTO_INCREMENT,
     gross_ammount INTEGER NOT NULL,
     keterangan VARCHAR(256) NOT NULL,
-    midtrans_payment_status VARCHAR(64) NOT NULL,
-    midtrans_payment_time TIMESTAMP NULL,
+    status VARCHAR(64) NULL,
+    snap_token VARCHAR(256) NULL,
+    snap_redirect_url VARCHAR(256) NULL,
+    payment_time TIMESTAMP NULL,
+    expired_at TIMESTAMP NULL,
+    snap_created_at TIMESTAMP NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP NULL
 );
+
+ALTER TABLE `order` AUTO_INCREMENT = 33;

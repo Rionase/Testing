@@ -10,6 +10,8 @@
                         <th>Gross Amount</th>
                         <th>Keterangan</th>
                         <th>Status</th>
+                        <th>Snap Created At</th>
+                        <th>Expired At</th>
                         <th>Payment Time</th>
                         <th class="text-center">Aksi</th>
                     </tr>
@@ -19,11 +21,13 @@
                         <td>{{ order.id_order }}</td>
                         <td>{{ order.gross_ammount }}</td>
                         <td>{{ order.keterangan }}</td>
-                        <td>{{ order.midtrans_payment_status }}</td>
-                        <td>{{ order.midtrans_payment_status == 'capture' || order.midtrans_payment_status == 'settlement' ? order.midtrans_payment_time : '-' }}</td>
+                        <td>{{ order.status ?? '-' }}</td>
+                        <td>{{ order.status ? order.snap_created_at : '-' }}</td>
+                        <td>{{ order.status ? order.expired_at : '-' }}</td>
+                        <td>{{ order.status == 'settlement' || order.status == 'capture' ? order.payment_time : '-' }}</td>
                         <td class="text-center">
                             <button
-                                v-if="order.midtrans_payment_status === 'pending'"
+                                v-if="!order.status || order.status === 'pending'"
                                 @click="handlePay(order.id_order)"
                                 class="btn-pay"
                             >
@@ -65,7 +69,20 @@ const handlePay = async (idOrder) => {
             data: { 'id_order': idOrder }
         });
         const token = response.data.token;
-        window.snap.pay(token);
+        window.snap.pay(token, {
+            onSuccess: function(result){
+                window.location.reload();
+            },
+            onPending: function(result){
+                window.location.reload();
+            },
+            onError: function(result){
+                alert(result);
+            },
+            onClose: function(){
+                window.location.reload();
+            }
+        });
 
     } catch (error) {
         console.error('Gagal memuat data:', error);
@@ -80,7 +97,7 @@ onMounted(() => {
 <style scoped>
 .order-container {
     font-family: sans-serif;
-    max-width: 900px;
+    max-width: 1100px;
     margin: 2rem auto;
     padding: 1rem;
 }

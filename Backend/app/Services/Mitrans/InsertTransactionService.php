@@ -16,7 +16,7 @@ class InsertTransactionService
             $order_id = $request->validated('order_id');
             $gross_ammount = $request->validated('gross_ammount');
 
-            $mitrans_auth_token = 'Basic ' . base64_encode( env('MITRANS_SERVER_KEY') . ':' );
+            $mitrans_auth_token = 'Basic ' . base64_encode( env('MIDTRANS_SERVER_KEY') . ':' );
 
             $response = Http::withHeaders([
                 'Accept' => 'application/json',
