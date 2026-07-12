@@ -9,33 +9,39 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property int $id
+ * @property int $id_order_status
+ * @property string $customer_name
+ * @property string $customer_email
+ * @property string $customer_phone
+ * @property string keterangan
  * @property int $gross_ammount
- * @property string $keterangan
- * @property string $status
+ * @property Carbon $snap_created_at
  * @property string $snap_token
  * @property string $snap_redirect_url
- * @property Carbon $payment_time
  * @property Carbon $expired_at
- * @property Carbon $snap_created_at
+ * @property Carbon $payment_time
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property Carbon $deleted_at
  */
-class Order extends Model
+class Orders extends Model
 {
     use SoftDeletes;
 
-    protected $table = 'order';
+    protected $table = 'orders';
 
     protected $fillable = [
-        'gross_ammount',
+        'id_order_status',
+        'customer_name',
+        'customer_email',
+        'customer_phone',
         'keterangan',
-        'status',
+        'gross_ammount',
+        'snap_created_at',
         'snap_token',
         'snap_redirect_url',
-        'payment_time',
         'expired_at',
-        'snap_created_at',
+        'payment_time',
         'created_at',
         'updated_at',
         'deleted_at',
