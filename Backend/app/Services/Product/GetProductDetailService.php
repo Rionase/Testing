@@ -15,8 +15,8 @@ class GetProductDetailService
 
         $data = Products::query()->select([
             'products.id',
-            'products.nama',
-            'products.keterangan',
+            'products.name',
+            'products.description',
             'products.quantity'
         ])->where('id', $id)
         ->first();

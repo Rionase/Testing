@@ -1,22 +1,22 @@
 <template>
     <div class="order-container">
-        <h2>Daftar Pesanan</h2>
+        <h2>Order List</h2>
 
         <div class="table-responsive">
             <table class="styled-table">
                 <thead>
                     <tr>
                         <th>Product ID</th>
-                        <th>Nama</th>
-                        <th>Keterangan</th>
+                        <th>Name</th>
+                        <th>Description</th>
                         <th>Quantity</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="product in products" :key="product.id">
                         <td>{{ product.id }}</td>
-                        <td>{{ product.nama }}</td>
-                        <td>{{ product.keterangan }}</td>
+                        <td>{{ product.name }}</td>
+                        <td>{{ product.description }}</td>
                         <td>{{ product.quantity }}</td>
                     </tr>
                 </tbody>

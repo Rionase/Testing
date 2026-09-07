@@ -12,8 +12,8 @@ class GetProductService
     {
         $list_products = Products::query()->select([
             'products.id',
-            'products.nama',
-            'products.keterangan',
+            'products.name',
+            'products.description',
             'products.quantity'
         ])->get();
 
