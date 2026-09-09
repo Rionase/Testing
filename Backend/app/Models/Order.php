@@ -24,11 +24,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property Carbon $updated_at
  * @property Carbon $deleted_at
  */
-class Orders extends Model
+class Order extends Model
 {
     use SoftDeletes;
 
-    protected $table = 'orders';
+    protected $table = 'order';
 
     protected $fillable = [
         'id_order_status',

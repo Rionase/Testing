@@ -2,7 +2,7 @@
 
 namespace App\Services\Product;
 
-use App\Models\Products;
+use App\Models\Product;
 use App\Utils\ResponseUtil;
 use Illuminate\Http\JsonResponse;
 
@@ -10,13 +10,13 @@ class GetProductService
 {
     public function handle(): JsonResponse
     {
-        $list_products = Products::query()->select([
-            'products.id',
-            'products.name',
-            'products.description',
-            'products.quantity'
+        $list_product = Product::query()->select([
+            'product.id',
+            'product.name',
+            'product.description',
+            'product.quantity'
         ])->get();
 
-        return ResponseUtil::success($list_products);
+        return ResponseUtil::success($list_product);
     }
 }

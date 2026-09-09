@@ -3,7 +3,7 @@
 namespace App\Services\Product;
 
 use App\Http\Requests\Product\GetProductDetailRequest;
-use App\Models\Products;
+use App\Models\Product;
 use App\Utils\ResponseUtil;
 use Illuminate\Http\JsonResponse;
 
@@ -13,11 +13,11 @@ class GetProductDetailService
     {
         $id = $request->validated('id');
 
-        $data = Products::query()->select([
-            'products.id',
-            'products.name',
-            'products.description',
-            'products.quantity'
+        $data = Product::query()->select([
+            'product.id',
+            'product.name',
+            'product.description',
+            'product.quantity'
         ])->where('id', $id)
         ->first();
 

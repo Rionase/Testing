@@ -16,11 +16,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property Carbon $updated_at
  * @property Carbon $deleted_at
  */
-class Products extends Model
+class Product extends Model
 {
     use SoftDeletes;
 
-    protected $table = 'products';
+    protected $table = 'product';
 
     protected $fillable = [
         'name',

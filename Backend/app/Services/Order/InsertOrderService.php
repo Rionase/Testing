@@ -6,8 +6,8 @@ use App\Exceptions\BaseException;
 use App\Exceptions\ValidationException;
 use App\Http\Requests\Order\InsertOrderRequest;
 use App\Models\OrderDetails;
-use App\Models\Orders;
-use App\Models\Products;
+use App\Models\Order;
+use App\Models\Product;
 use App\Utils\ResponseUtil;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
@@ -30,9 +30,9 @@ class InsertOrderService
             $customer_email = $request->validated('customer_email');
             $customer_phone = $request->validated('customer_phone');
             $notes = $request->validated('notes');
-            $list_products = $request->validated('list_products');
+            $list_product = $request->validated('list_product');
 
-            $orders = Orders::query()->create([
+            $order = Order::query()->create([
                 'id_order_status' => 1, // INITIATED
                 'customer_name' => $customer_name,
                 'customer_email' => $customer_email,
@@ -46,11 +46,11 @@ class InsertOrderService
             ]);
             $total_price = 0;
 
-            foreach ($list_products as $product) {
+            foreach ($list_product as $product) {
                 $id_product = $product['id_product'];
                 $quantity = $product['quantity'];
 
-                $product = Products::query()->findOrFail($id_product);
+                $product = Product::query()->findOrFail($id_product);
 
                 if ($quantity > $product->quantity) {
                     throw new ValidationException("Quantity product : $product->name exced inventory quantity.");
@@ -61,8 +61,8 @@ class InsertOrderService
                 ]);
 
                 OrderDetails::query()->create([
-                    'id_orders' => $orders->id,
-                    'id_products' => $id_product,
+                    'id_order' => $order->id,
+                    'id_product' => $id_product,
                     'name' => $product->name,
                     'quantity' => $quantity,
                     'price' => $product->price,
@@ -70,14 +70,14 @@ class InsertOrderService
                 $total_price += $product->price * $quantity;
             }
 
-            $orders->update([
+            $order->update([
                 'total_price' => $total_price
             ]);
 
             $connection->commit();
 
             return ResponseUtil::success(
-                data: [ 'id_orders' => $orders->id ],
+                data: [ 'id_order' => $order->id ],
                 message: 'Berhasil membuat order.'
             );
 

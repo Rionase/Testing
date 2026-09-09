@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property int $id
- * @property int $id_orders
- * @property int $id_products
+ * @property int $id_order
+ * @property int $id_product
  * @property string $name
  * @property int $quantity
  * @property int $price
@@ -21,11 +21,11 @@ class OrderDetails extends Model
 {
     use SoftDeletes;
 
-    protected $table = 'order_details';
+    protected $table = 'order_detail';
 
     protected $fillable = [
-        'id_orders',
-        'id_products',
+        'id_order',
+        'id_product',
         'name',
         'quantity',
         'price'

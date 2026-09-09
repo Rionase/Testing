@@ -27,9 +27,9 @@ class InsertOrderRequest extends FormRequest
             'customer_email' => [ 'required', 'string', 'email', 'max:256' ],
             'customer_phone' => [ 'required', 'string', 'max:20' ],
             'notes' => [ 'nullable', 'string', 'max:256' ],
-            'list_products' => [ 'required', 'array', 'min:1' ],
-            'list_products.*.id_product' => [ 'required', 'integer', 'distinct', 'exists:products,id' ],
-            'list_products.*.quantity' => [ 'required', 'integer', 'min:1' ],
+            'list_product' => [ 'required', 'array', 'min:1' ],
+            'list_product.*.id_product' => [ 'required', 'integer', 'distinct', 'exists:product,id' ],
+            'list_product.*.quantity' => [ 'required', 'integer', 'min:1' ],
         ];
     }
 }

@@ -23,7 +23,7 @@ class GetProductDetailRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => [ 'required', 'integer', 'exists:products,id' ],
+            'id' => [ 'required', 'integer', 'exists:product,id' ],
         ];
     }
 

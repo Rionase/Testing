@@ -1,4 +1,4 @@
-CREATE TABLE products (
+CREATE TABLE product (
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(128) NOT NULL,
     description VARCHAR(256) NULL,
@@ -9,7 +9,7 @@ CREATE TABLE products (
     deleted_at TIMESTAMP NULL
 );
 
-INSERT INTO products (id, name, description, price, quantity, created_at, updated_at, deleted_at) VALUES
+INSERT INTO product (id, name, description, price, quantity, created_at, updated_at, deleted_at) VALUES
 (1, 'Mouse Wireless Ergonomis', 'Mouse nirkabel 2.4GHz dengan sensor optik presisi tinggi', 150000.00, 25, NOW(), NOW(), NULL),
 (2, 'Keyboard Mekanikal RGB', 'Keyboard mekanikal 87 tombol dengan switch tactile dan lampu RGB', 450000.00, 15, NOW(), NOW(), NULL),
 (3, 'Kabel Data USB Type-C', 'Kabel pengisian daya cepat 60W dengan bahan nylon braided tahan lama', 35000.00, 50, NOW(), NOW(), NULL),
@@ -52,7 +52,7 @@ INSERT INTO order_status (id, name, is_midtrans_status, created_at, updated_at, 
 
 
 
-CREATE TABLE orders (
+CREATE TABLE `order` (
     id INT PRIMARY KEY AUTO_INCREMENT,
     id_order_status INT NOT NULL,
     customer_name VARCHAR(256) NOT NULL,
@@ -69,24 +69,24 @@ CREATE TABLE orders (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP NULL,
-    CONSTRAINT fk_orders_order_status FOREIGN KEY (id_order_status) REFERENCES order_status(id) ON UPDATE RESTRICT ON DELETE RESTRICT
+    CONSTRAINT fk_order_order_status FOREIGN KEY (id_order_status) REFERENCES order_status(id) ON UPDATE RESTRICT ON DELETE RESTRICT
 );
 
-ALTER TABLE `orders` AUTO_INCREMENT = 52;
+ALTER TABLE `order` AUTO_INCREMENT = 52;
 
 
 
 
-CREATE TABLE order_details (
+CREATE TABLE order_detail (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    id_orders INT NOT NULL,
-    id_products INT NOT NULL,
+    id_order INT NOT NULL,
+    id_product INT NOT NULL,
     name VARCHAR(128) NOT NULL,
     quantity INT NOT NULL,
     price INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP NULL,
-    CONSTRAINT fk_order_details_orders FOREIGN KEY (id_orders) REFERENCES orders(id) ON UPDATE RESTRICT ON DELETE RESTRICT,
-    CONSTRAINT fk_order_details_products FOREIGN KEY (id_products) REFERENCES products(id) ON UPDATE RESTRICT ON DELETE RESTRICT
+    CONSTRAINT fk_order_detail_order FOREIGN KEY (id_order) REFERENCES `order`(id) ON UPDATE RESTRICT ON DELETE RESTRICT,
+    CONSTRAINT fk_order_detail_product FOREIGN KEY (id_product) REFERENCES product(id) ON UPDATE RESTRICT ON DELETE RESTRICT
 );
