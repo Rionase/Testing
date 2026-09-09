@@ -13,9 +13,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $customer_name
  * @property string $customer_email
  * @property string $customer_phone
- * @property string keterangan
- * @property int $gross_ammount
- * @property Carbon $snap_created_at
+ * @property string $notes
+ * @property int $total_price
+ *
  * @property string $snap_token
  * @property string $snap_redirect_url
  * @property Carbon $expired_at
@@ -35,15 +35,11 @@ class Orders extends Model
         'customer_name',
         'customer_email',
         'customer_phone',
-        'keterangan',
-        'gross_ammount',
-        'snap_created_at',
+        'notes',
+        'total_price',
         'snap_token',
         'snap_redirect_url',
         'expired_at',
         'payment_time',
-        'created_at',
-        'updated_at',
-        'deleted_at',
     ];
 }
