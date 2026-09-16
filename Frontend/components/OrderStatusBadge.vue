@@ -1,25 +1,21 @@
 <template>
     <span class="status-badge" :class="config.class">
-        {{ label || config.label }}
+        {{ config.label }}
     </span>
 </template>
 
 <script setup>
 import { computed } from 'vue';
-import { getStatusConfig } from '../utils/MidtransStatusUtils.js';
+import { getOrderStatusConfig } from '../utils/OrderStatusUtils.js';
 
 const props = defineProps({
     status: {
         type: String,
         default: ''
-    },
-    label: {
-        type: String,
-        default: ''
     }
 });
 
-const config = computed(() => getStatusConfig(props.status));
+const config = computed(() => getOrderStatusConfig(props.status));
 </script>
 
 <style scoped>

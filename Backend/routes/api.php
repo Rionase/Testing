@@ -23,6 +23,7 @@ Route::prefix('midtrans')->group(function() {
 
 Route::prefix('order')->group(function () {
     Route::get('', [OrderController::class, 'getOrder']);
+    Route::get('{id}', [OrderController::class, 'getOrderDetail']);
     Route::post('', [OrderController::class, 'insertOrder']);
     Route::post('payment', [OrderController::class, 'insertPayment']);
 });

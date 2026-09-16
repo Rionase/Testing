@@ -69,7 +69,7 @@ export const DEFAULT_STATUS = {
  * Helper untuk mendapatkan config status berdasarkan nama status
  * @param {string} status
  */
-export const getStatusConfig = (status) => {
+export const getOrderStatusConfig = (status) => {
     if (!status) return DEFAULT_STATUS;
     const key = String(status).toUpperCase();
     return STATUS_CONFIG[key] || { class: 'status-default', label: status };

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Order\GetOrderDetailRequest;
 use App\Http\Requests\Order\GetOrderRequest;
 use App\Http\Requests\Order\InsertOrderRequest;
 use App\Http\Requests\Order\InsertPaymentRequest;
+use App\Services\Order\GetOrderDetailService;
 use App\Services\Order\GetOrderService;
 use App\Services\Order\InsertOrderService;
 use App\Services\Order\InsertPaymentService;
@@ -13,6 +15,11 @@ use Illuminate\Http\JsonResponse;
 class OrderController
 {
     public function getOrder(GetOrderService $service, GetOrderRequest $request): JsonResponse
+    {
+        return $service->handle($request);
+    }
+
+    public function getOrderDetail(GetOrderDetailService $service, GetOrderDetailRequest $request): JsonResponse
     {
         return $service->handle($request);
     }

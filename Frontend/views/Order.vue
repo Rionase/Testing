@@ -26,7 +26,9 @@
                         <td>{{ order.customer_name }}</td>
                         <td>{{ order.customer_email }}</td>
                         <td>{{ order.customer_phone }}</td>
-                        <td>{{ order.order_status_name }}</td>
+                        <td>
+                            <OrderStatusBadge :status="order.order_status_name" />
+                        </td>
                         <td>{{ order.total_price }}</td>
                         <td>{{ formatDate(order.created_at) }}</td>
                         <td>{{ formatDate(order.expired_at) }}</td>
@@ -41,6 +43,7 @@
 import { ref, onMounted } from 'vue';
 import { fetchApi } from "../utils/ApiUtils.js";
 import {formatDate} from "../utils/DatetimeUtils.js";
+import OrderStatusBadge from "../components/OrderStatusBadge.vue";
 
 const orders = ref([]);
 
