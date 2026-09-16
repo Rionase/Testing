@@ -23,8 +23,9 @@ class InsertTransactionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'order_id' => [ 'required', 'string' ],
-            'gross_ammount' => [ 'required', 'integer', 'min:1' ]
+            'params' => [ 'array', 'required' ],
+            'params.transaction_details.order_id' => [ 'required', 'integer' ],
+            'params.transaction_details.gross_amount' => [ 'required', 'integer' ]
         ];
     }
 }

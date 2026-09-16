@@ -14,8 +14,11 @@ Route::prefix('product')->group(function () {
 });
 
 Route::prefix('midtrans')->group(function() {
-    Route::post('transaction', [MidtransController::class, 'insertTransaction']);
     Route::post('payment-notification', [MidtransController::class, 'insertPaymentNotification']);
+
+    if (env('APP_ENV') == 'local') {
+        Route::post('transaction', [MidtransController::class, 'insertTransaction']);
+    }
 });
 
 Route::prefix('order')->group(function () {

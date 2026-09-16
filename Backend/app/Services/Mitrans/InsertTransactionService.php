@@ -4,43 +4,26 @@ namespace App\Services\Mitrans;
 
 use App\Exceptions\BaseException;
 use App\Http\Requests\Mitrans\InsertTransactionRequest;
+use App\Utils\MidtransUtil;
+use Exception;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Http;
 use Throwable;
 
 class InsertTransactionService
 {
+    /**
+     * @throws Exception
+     */
     public function handle(InsertTransactionRequest $request): JsonResponse
     {
         try {
-            $order_id = $request->validated('order_id');
-            $gross_ammount = $request->validated('gross_ammount');
+            $params = $request->validated('params');
 
-            $mitrans_auth_token = 'Basic ' . base64_encode( env('MIDTRANS_SERVER_KEY') . ':' );
+            $result = MidtransUtil::insertMidtransTransaction($params);
 
-            $response = Http::withHeaders([
-                'Accept' => 'application/json',
-                'Content-Type'  => 'application/json',
-                'Authorization' => $mitrans_auth_token
-            ])->withoutVerifying() // DELETE ON PRODUCTION
-            ->post('https://app.sandbox.midtrans.com/snap/v1/transactions', [
-                'transaction_details' => [
-                    'order_id'     => $order_id,
-                    'gross_amount' => $gross_ammount
-                ]
-            ]);
-
-            if ($response->failed()) {
-                throw new BaseException(
-                    message: $response->json()['error_messages'][0] ?? 'Terjadi kesalahan pada server Midtrans.',
-                    code: $response->status()
-                );
-            };
-
-            $data = $response->json();
             return response()->json([
                 'message' => 'success',
-                'data'=> $data
+                'data'=> $result
             ]);
 
         } catch (Throwable $throwable) {

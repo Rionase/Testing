@@ -78,7 +78,7 @@ class InsertOrderService
 
             return ResponseUtil::success(
                 data: [ 'id_order' => $order->id ],
-                message: 'Berhasil membuat order.'
+                message: 'Succesfully create new order.'
             );
 
         } catch (Throwable $throwable) {
