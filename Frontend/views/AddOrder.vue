@@ -276,9 +276,7 @@ const loadProducts = async () => {
             url: '/api/product',
         });
         availableProducts.value = response.data || [];
-    } catch (error) {
-        console.error('Failed to load products:', error);
-    }
+    } catch (error) {}
 };
 
 // Filter catalog based on keyword
@@ -412,18 +410,6 @@ const handleSubmit = async () => {
         const idOrder = response.data.id_order
         await router.push(`/orders/${idOrder}`);
     } catch (error) {
-        console.error('Failed to submit order:', error);
-        if (error.response && error.response.status === 422 && error.response.data.errors) {
-            const bErrors = error.response.data.errors;
-            if (bErrors.customer_name) errors.customer_name = bErrors.customer_name[0];
-            if (bErrors.customer_email) errors.customer_email = bErrors.customer_email[0];
-            if (bErrors.customer_phone) errors.customer_phone = bErrors.customer_phone[0];
-            if (bErrors.notes) errors.notes = bErrors.notes[0];
-            if (bErrors.list_product) errors.list_product = bErrors.list_product[0];
-        } else {
-            const errorMsg = error.response?.data?.message || 'A system error occurred. Please try again.';
-            alert(errorMsg);
-        }
     } finally {
         isSubmitting.value = false;
     }

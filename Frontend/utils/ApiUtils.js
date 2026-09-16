@@ -39,10 +39,11 @@ export async function fetchApi({
         
         if (!status) {
             // Gagal mendapatkan response dari Backend
-            alert('Terjadi kesalahan dalam mengambil server API')
+            alert('Error on fetching API.')
         } else {
-            alert(error?.response?.data?.message || 'Terjadi kesalahan saat mengambil server API.')
+            alert(error?.response?.data?.message || 'Error on fetching API.')
         }
+        console.error(error);
 
         throw error;
     }

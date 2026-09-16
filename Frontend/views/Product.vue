@@ -1,6 +1,6 @@
 <template>
     <div class="order-container">
-        <h2>Order List</h2>
+        <h2>Product List</h2>
 
         <div class="table-responsive">
             <table class="styled-table">
@@ -38,9 +38,7 @@ const loadProducts = async () => {
             url: '/api/product',
         });
         products.value = response.data || [];
-    } catch (error) {
-        console.error('Gagal memuat data:', error);
-    }
+    } catch (error) {}
 };
 
 onMounted(() => {

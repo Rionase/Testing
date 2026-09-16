@@ -1,40 +1,35 @@
 <template>
     <div class="order-container">
-        <h2>Daftar Pesanan</h2>
+        <h2>Order List</h2>
 
         <div class="table-responsive">
             <table class="styled-table">
                 <thead>
                     <tr>
                         <th>Order ID</th>
-                        <th>Gross Amount</th>
-                        <th>Keterangan</th>
-                        <th>Status</th>
-                        <th>Snap Created At</th>
+                        <th>Customer Name</th>
+                        <th>Customer Email</th>
+                        <th>Customer Phone</th>
+                        <th>Order Status</th>
+                        <th>Total Price</th>
+                        <th>Created At</th>
                         <th>Expired At</th>
-                        <th>Payment Time</th>
-                        <th class="text-center">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="order in orders" :key="order.id_order">
-                        <td>{{ order.id_order }}</td>
-                        <td>{{ order.gross_ammount }}</td>
-                        <td>{{ order.keterangan }}</td>
-                        <td>{{ order.status ?? '-' }}</td>
-                        <td>{{ order.status ? order.snap_created_at : '-' }}</td>
-                        <td>{{ order.status ? order.expired_at : '-' }}</td>
-                        <td>{{ order.status == 'settlement' || order.status == 'capture' ? order.payment_time : '-' }}</td>
-                        <td class="text-center">
-                            <button
-                                v-if="!order.status || order.status === 'pending'"
-                                @click="handlePay(order.id_order)"
-                                class="btn-pay"
-                            >
-                                PAY
-                            </button>
-                            <span v-else class="text-muted">-</span>
+                    <tr v-for="order in orders" :key="order.id">
+                        <td>
+                            <router-link :to="`/order/${order.id}`" class="order-link">
+                                {{ order.id }}
+                            </router-link>
                         </td>
+                        <td>{{ order.customer_name }}</td>
+                        <td>{{ order.customer_email }}</td>
+                        <td>{{ order.customer_phone }}</td>
+                        <td>{{ order.order_status_name }}</td>
+                        <td>{{ order.total_price }}</td>
+                        <td>{{ formatDate(order.created_at) }}</td>
+                        <td>{{ formatDate(order.expired_at) }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -45,6 +40,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { fetchApi } from "../utils/ApiUtils.js";
+import {formatDate} from "../utils/DatetimeUtils.js";
 
 const orders = ref([]);
 
@@ -55,38 +51,7 @@ const loadOrders = async () => {
             url: '/api/order',
         });
         orders.value = response.data || [];
-    } catch (error) {
-        console.error('Gagal memuat data:', error);
-    }
-};
-
-// Fungsi untuk mengarahkan customer ke halaman pembayaran
-const handlePay = async (idOrder) => {
-    try {
-        const response = await fetchApi({
-            method: 'POST',
-            url: '/api/order/payment',
-            data: { 'id_order': idOrder }
-        });
-        const token = response.data.token;
-        window.snap.pay(token, {
-            onSuccess: function(result){
-                window.location.reload();
-            },
-            onPending: function(result){
-                window.location.reload();
-            },
-            onError: function(result){
-                alert(result);
-            },
-            onClose: function(){
-                window.location.reload();
-            }
-        });
-
-    } catch (error) {
-        console.error('Gagal memuat data:', error);
-    }
+    } catch (error) {}
 };
 
 onMounted(() => {
@@ -97,7 +62,7 @@ onMounted(() => {
 <style scoped>
 .order-container {
     font-family: sans-serif;
-    max-width: 1100px;
+    max-width: 1500px;
     margin: 2rem auto;
     padding: 1rem;
 }
