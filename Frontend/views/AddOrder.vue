@@ -408,7 +408,7 @@ const handleSubmit = async () => {
         alert('Order submitted successfully!');
 
         const idOrder = response.data.id_order
-        await router.push(`/orders/${idOrder}`);
+        await router.push(`/order/${idOrder}`);
     } catch (error) {
     } finally {
         isSubmitting.value = false;

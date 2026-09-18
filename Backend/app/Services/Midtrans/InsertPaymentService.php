@@ -2,13 +2,18 @@
 
 namespace App\Services\Midtrans;
 
+use App\Enums\OrderStatusEnum;
 use App\Exceptions\BaseException;
 use App\Exceptions\ValidationException;
 use App\Http\Requests\Midtrans\InsertPaymentRequest;
 use App\Models\Order;
+use App\Models\OrderDetail;
+use App\Utils\MidtransUtil;
+use App\Utils\ResponseUtil;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Throwable;
 
 class InsertPaymentService
@@ -18,73 +23,84 @@ class InsertPaymentService
      */
     public function handle(InsertPaymentRequest $request): JsonResponse
     {
-
         $id_order = $request->validated('id_order');
-        $order = Order::query()->findOrFail($id_order);
 
-        $mitrans_auth_token = 'Basic ' . base64_encode( env('MIDTRANS_SERVER_KEY') . ':' );
-        $midtrans_expiry_duration_minutes = (int) env('MIDTRANS_EXPIRY_DURATION_MINUTES');
+        $connection = DB::connection('mysql');
+        $connection->beginTransaction();
 
-        if (!is_null($order->status) && now() > $order->expired_at) {
-            throw new ValidationException('Waktu Pembayaran Telah Habis!');
+        try {
 
-        } else if (is_null($order->status)) {
-            // Order sudah dicheckout user, tapi belum initiate snap pembayaran midtrans
+            $order = Order::query()->where('id', $id_order)->firstOrFail();
+            $order_status_name = $order->orderStatus->name;
 
-            $connection = DB::connection('mysql');
-            $connection->beginTransaction();
-            try {
+            $now = now();
+            if ($now > $order->expired_at) {
+                throw new ValidationException('Order has expired.');
 
-                $response = Http::withHeaders([
-                    'Accept' => 'application/json',
-                    'Content-Type'  => 'application/json',
-                    'Authorization' => $mitrans_auth_token
-                ])->withoutVerifying() // DELETE ON PRODUCTION
-                ->post('https://app.sandbox.midtrans.com/snap/v1/transactions', [
+            } else if ($order_status_name == OrderStatusEnum::INITIATED->value) {
+                // select perlu sesuai dengan format INSERT MIDTRANS TRANSACTION ['item_details']
+                $list_order_detail = OrderDetail::query()->select([
+                    'product.id AS id',
+                    'product.name AS name',
+                    'product.price AS price',
+                    'order_detail.quantity AS quantity',
+                ])->join('product', 'product.id', 'order_detail.id_product')
+                    ->where('id_order', $id_order)
+                    ->get()
+                    ->toArray();
+
+                $remaining_minutes_page_expiry = (int) ceil($now->diffInMinutes($order->expired_at));
+                $midtrans_payment_expiry_duration_minutes = (int) env('MIDTRANS_PAYMENT_EXPIRY_DURATION_MINUTES');
+
+                $midtrans_transaction_payload = [
                     'transaction_details' => [
-                        'order_id'     => $order->id,
-                        'gross_amount' => $order->gross_ammount
+                        'order_id' => $order->id,
+                        'gross_amount' => $order->total_price,
+                    ],
+                    'item_details' => $list_order_detail,
+                    'customer_details' => [
+                        'first_name' => $order->customer_name,
+                        'email' => $order->customer_email,
+                        'phone' => $order->customer_phone,
+                    ],
+                    'page_expiry' => [
+                        'unit' => 'minutes',
+                        'duration' => $remaining_minutes_page_expiry,
+                    ],
+                    'expiry' => [
+                        'unit' => 'minutes',
+                        'duration' => $midtrans_payment_expiry_duration_minutes,
                     ]
-                ]);
+                ];
 
-                if ($response->failed()) {
-                    throw new BaseException(
-                        message: $response->json()['error_messages'][0] ?? 'Terjadi kesalahan pada server Midtrans.',
-                        code: $response->status()
-                    );
-                };
-
-                $token = $response->json()['token'];
-                $redirect_url = $response->json()['redirect_url'];
+                $response = MidtransUtil::insertMidtransTransaction($midtrans_transaction_payload);
+                $snap_token = $response['token'];
+                $snap_redirect_url = $response['redirect_url'];
 
                 $order->update([
-                    'status' => 'pending',
-                    'snap_token' => $token,
-                    'snap_redirect_url' => $redirect_url,
-                    'expired_at' => now()->addMinutes($midtrans_expiry_duration_minutes)
+                    'id_order_status' => 2, // PENDING
+                    'snap_token' => $snap_token,
+                    'snap_redirect_url' => $snap_redirect_url,
                 ]);
 
                 $connection->commit();
-            } catch (Throwable $throwable) {
-                $connection->rollBack();
-                throw new BaseException(message: $throwable->getMessage(), code: $throwable->getCode());
+
+            } else if ($order->orderStatus->name == OrderStatusEnum::PENDING->value) {
+                $snap_token = $order->snap_token;
+                $snap_redirect_url = $order->snap_redirect_url;
+
+            } else {
+                throw new ValidationException("Unable to do payment on $order_status_name status.");
             }
 
-        } else if ($order->status == 'pending' && now() <= $order->expired_at) {
-            $token = $order->snap_token;
-            $redirect_url = $order->snap_redirect_url;
+            return ResponseUtil::success(data: [
+                'snap_token' => $snap_token,
+                'snap_redirect_url' => $snap_redirect_url,
+            ]);
 
-        } else {
-            throw new BaseException('Terjadi kesalahan pada server API.', 500);
-
+        } catch (Throwable $throwable) {
+            $connection->rollBack();
+            throw new BaseException(message: $throwable->getMessage(), code: $throwable->getCode());
         }
-
-        return response()->json([
-            'message' => 'Berhasil mendapatkan data pembayaran midtrans.',
-            'data'=> [
-                'token' => $token,
-                'redirect_url' => $redirect_url,
-            ]
-        ]);
     }
 }

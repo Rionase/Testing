@@ -191,24 +191,25 @@ const handlePayment = async () => {
     try {
         const response = await fetchApi({
             method: 'POST',
-            url: `/api/midtrans/payment/${orderId}`
+            url: `/api/midtrans/payment`,
+            data: {
+                'id_order': orderId,
+            }
         });
 
         const snapToken = response.data?.snap_token;
-        const redirectUrl = response.data?.redirect_url;
+        const redirectUrl = response.data?.snap_redirect_url;
 
         // Opsi 1: Jika Midtrans Snap JS terpasang di window
-        if (window.snap && snapToken) {
+        if (snapToken) {
             window.snap.pay(snapToken, {
                 onSuccess: () => loadOrderDetail(),
                 onPending: () => loadOrderDetail(),
                 onError: () => loadOrderDetail(),
                 onClose: () => loadOrderDetail()
             });
-        }
-        // Opsi 2: Fallback redirect ke URL Midtrans Snap jika disiapkan backend
-        else if (redirectUrl) {
-            window.location.href = redirectUrl;
+        } else {
+            alert('Payment Not Found!');
         }
     } catch (error) {
         // Silent catch

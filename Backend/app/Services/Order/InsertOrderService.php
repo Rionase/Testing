@@ -20,7 +20,7 @@ class InsertOrderService
      */
     public function handle(InsertOrderRequest $request): JsonResponse
     {
-        $midtrans_expiry_duration_minutes = (int) env('MIDTRANS_EXPIRY_DURATION_MINUTES');
+        $midtrans_page_expiry_duration_minutes = (int) env('MIDTRANS_PAGE_EXPIRY_DURATION_MINUTES');
 
         $connection = DB::connection('mysql');
         $connection->beginTransaction();
@@ -41,7 +41,7 @@ class InsertOrderService
                 'total_price' => 0,
                 'snap_token' => null,
                 'snap_redirect_url' => null,
-                'expired_at' => now()->addMinutes($midtrans_expiry_duration_minutes),
+                'expired_at' => now()->addMinutes($midtrans_page_expiry_duration_minutes),
                 'payment_time' => null
             ]);
             $total_price = 0;

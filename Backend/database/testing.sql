@@ -64,15 +64,15 @@ CREATE TABLE `order` (
 --  SNAP DATA
     snap_token VARCHAR(256) NULL,
     snap_redirect_url VARCHAR(256) NULL,
-    expired_at TIMESTAMP NOT NULL,
-    payment_time TIMESTAMP NULL,
+    expired_at DATETIME NOT NULL,
+    payment_time DATETIME NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP NULL,
     CONSTRAINT fk_order_order_status FOREIGN KEY (id_order_status) REFERENCES order_status(id) ON UPDATE RESTRICT ON DELETE RESTRICT
 );
 
-ALTER TABLE `order` AUTO_INCREMENT = 52;
+ALTER TABLE `order` AUTO_INCREMENT = 56;
 
 
 

@@ -120,11 +120,13 @@ class MidtransUtil
      *      "email": string|null,
      *      "phone": string|null
      *  },
+     * // Expiration for End Payment Page after Choosing payment method
      *  "expiry": {
      *      "start_time": string|null,
      *      "unit": 'day' | 'days' | 'hour' | 'hours' | 'minute' | 'minutes',
      *      "duration": int
      *  },
+     *  // Expiration for Choose payment method
      *  "page_expiry": {
      *      "unit": 'day' | 'days' | 'hour' | 'hours' | 'minute' | 'minutes',
      *      "duration": int
