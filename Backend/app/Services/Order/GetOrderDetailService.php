@@ -4,7 +4,7 @@ namespace App\Services\Order;
 
 use App\Http\Requests\Order\GetOrderDetailRequest;
 use App\Models\Order;
-use App\Models\OrderDetails;
+use App\Models\OrderDetail;
 use App\Utils\ResponseUtil;
 use Illuminate\Http\JsonResponse;
 
@@ -31,7 +31,7 @@ class GetOrderDetailService
             ->first()
             ->toArray();
 
-        $order_detail = OrderDetails::query()->select([
+        $order_detail = OrderDetail::query()->select([
                 'order_detail.id',
                 'order_detail.id_product',
                 'order_detail.name',

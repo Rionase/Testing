@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property Carbon $updated_at
  * @property Carbon $deleted_at
  */
-class OrderDetails extends Model
+class OrderDetail extends Model
 {
     use SoftDeletes;
 

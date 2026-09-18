@@ -5,7 +5,7 @@ namespace App\Services\Order;
 use App\Exceptions\BaseException;
 use App\Exceptions\ValidationException;
 use App\Http\Requests\Order\InsertOrderRequest;
-use App\Models\OrderDetails;
+use App\Models\OrderDetail;
 use App\Models\Order;
 use App\Models\Product;
 use App\Utils\ResponseUtil;
@@ -60,7 +60,7 @@ class InsertOrderService
                     'quantity' => $product->quantity - $quantity
                 ]);
 
-                OrderDetails::query()->create([
+                OrderDetail::query()->create([
                     'id_order' => $order->id,
                     'id_product' => $id_product,
                     'name' => $product->name,
