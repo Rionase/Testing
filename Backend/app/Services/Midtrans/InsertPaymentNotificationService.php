@@ -1,14 +1,12 @@
 <?php
 
-namespace App\Services\Mitrans;
+namespace App\Services\Midtrans;
 
 use App\Exceptions\BaseException;
-use App\Http\Requests\Mitrans\InsertPaymentNotificationRequest;
-use App\Http\Requests\Mitrans\InsertTransactionRequest;
+use App\Http\Requests\Midtrans\InsertPaymentNotificationRequest;
 use App\Models\Order;
 use App\Utils\ResponseUtil;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Log;
 use Throwable;
 
 class InsertPaymentNotificationService

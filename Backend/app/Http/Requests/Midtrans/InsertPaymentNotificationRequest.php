@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Mitrans;
+namespace App\Http\Requests\Midtrans;
 
 use App\Exceptions\ValidationException;
 use Illuminate\Contracts\Validation\ValidationRule;

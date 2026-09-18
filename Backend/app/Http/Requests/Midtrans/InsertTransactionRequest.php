@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Order;
+namespace App\Http\Requests\Midtrans;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class InsertPaymentRequest extends FormRequest
+class InsertTransactionRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,7 +23,9 @@ class InsertPaymentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id_order' => [ 'required', 'integer', 'exists:order,id' ],
+            'params' => [ 'array', 'required' ],
+            'params.transaction_details.order_id' => [ 'required', 'integer' ],
+            'params.transaction_details.gross_amount' => [ 'required', 'integer' ]
         ];
     }
 }

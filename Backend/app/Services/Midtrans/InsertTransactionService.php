@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Services\Mitrans;
+namespace App\Services\Midtrans;
 
 use App\Exceptions\BaseException;
-use App\Http\Requests\Mitrans\InsertTransactionRequest;
+use App\Http\Requests\Midtrans\InsertTransactionRequest;
 use App\Utils\MidtransUtil;
 use Exception;
 use Illuminate\Http\JsonResponse;

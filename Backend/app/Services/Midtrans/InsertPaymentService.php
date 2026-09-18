@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Services\Order;
+namespace App\Services\Midtrans;
 
 use App\Exceptions\BaseException;
 use App\Exceptions\ValidationException;
-use App\Http\Requests\Order\InsertOrderRequest;
-use App\Http\Requests\Order\InsertPaymentRequest;
+use App\Http\Requests\Midtrans\InsertPaymentRequest;
 use App\Models\Order;
-use App\Utils\ResponseUtil;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
