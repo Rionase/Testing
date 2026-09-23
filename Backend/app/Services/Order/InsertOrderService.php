@@ -8,6 +8,7 @@ use App\Http\Requests\Order\InsertOrderRequest;
 use App\Models\OrderDetail;
 use App\Models\Order;
 use App\Models\Product;
+use App\Utils\MidtransUtil;
 use App\Utils\ResponseUtil;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
@@ -21,6 +22,7 @@ class InsertOrderService
     public function handle(InsertOrderRequest $request): JsonResponse
     {
         $midtrans_page_expiry_duration_minutes = (int) env('MIDTRANS_PAGE_EXPIRY_DURATION_MINUTES');
+        $midtrans_payment_expiry_duration_minutes = (int) env('MIDTRANS_PAYMENT_EXPIRY_DURATION_MINUTES');
 
         $connection = DB::connection('mysql');
         $connection->beginTransaction();
@@ -74,6 +76,48 @@ class InsertOrderService
                 'total_price' => $total_price
             ]);
 
+            // CALL POST MIDTRANS TRANSCTION API
+            $list_order_detail = OrderDetail::query()->select([
+                'product.id AS id',
+                'product.name AS name',
+                'product.price AS price',
+                'order_detail.quantity AS quantity',
+            ])->join('product', 'product.id', 'order_detail.id_product')
+                ->where('id_order', $order->id)
+                ->get()
+                ->toArray();
+
+            $midtrans_transaction_payload = [
+                'transaction_details' => [
+                    'order_id' => $order->id,
+                    'gross_amount' => $order->total_price,
+                ],
+                'item_details' => $list_order_detail,
+                'customer_details' => [
+                    'first_name' => $order->customer_name,
+                    'email' => $order->customer_email,
+                    'phone' => $order->customer_phone,
+                ],
+                'page_expiry' => [
+                    'unit' => 'minutes',
+                    'duration' => $midtrans_page_expiry_duration_minutes,
+                ],
+                'expiry' => [
+                    'unit' => 'minutes',
+                    'duration' => $midtrans_payment_expiry_duration_minutes,
+                ]
+            ];
+
+            $response = MidtransUtil::insertMidtransTransaction($midtrans_transaction_payload);
+            $snap_token = $response['token'];
+            $snap_redirect_url = $response['redirect_url'];
+
+            $order->update([
+                'id_order_status' => 2, // PENDING
+                'snap_token' => $snap_token,
+                'snap_redirect_url' => $snap_redirect_url,
+            ]);
+
             $connection->commit();
 
             return ResponseUtil::success(
@@ -85,7 +129,5 @@ class InsertOrderService
             $connection->rollBack();
             throw new BaseException(message: $throwable->getMessage(), code: $throwable->getCode());
         }
-
-
     }
 }

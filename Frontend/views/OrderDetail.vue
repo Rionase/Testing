@@ -190,11 +190,8 @@ const handlePayment = async () => {
 
     try {
         const response = await fetchApi({
-            method: 'POST',
-            url: `/api/midtrans/payment`,
-            data: {
-                'id_order': orderId,
-            }
+            method: 'GET',
+            url: `/api/midtrans/payment/${orderId}`
         });
 
         const snapToken = response.data?.snap_token;

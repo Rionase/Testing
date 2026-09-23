@@ -5,7 +5,7 @@ namespace App\Http\Requests\Midtrans;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class InsertPaymentRequest extends FormRequest
+class GetPaymentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,5 +25,12 @@ class InsertPaymentRequest extends FormRequest
         return [
             'id_order' => [ 'required', 'integer', 'exists:order,id' ],
         ];
+    }
+
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'id_order' => $this->route('id_order'),
+        ]);
     }
 }
