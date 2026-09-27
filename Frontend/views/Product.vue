@@ -10,6 +10,7 @@
                         <th>Name</th>
                         <th>Description</th>
                         <th>Quantity</th>
+                        <th>Pending Quantity</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -18,6 +19,7 @@
                         <td>{{ product.name }}</td>
                         <td>{{ product.description }}</td>
                         <td>{{ product.quantity }}</td>
+                        <td>{{ product.pending_quantity }}</td>
                     </tr>
                 </tbody>
             </table>

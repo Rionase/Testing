@@ -36,7 +36,7 @@ class GetPaymentService
             } else if ($now > $order->expired_at) {
                 throw new ValidationException('Order has expired.');
 
-            } else if ($order->orderStatus->name == OrderStatusEnum::PENDING->value) {
+            } else if ($order->orderStatus->name == OrderStatusEnum::PENDING->label()) {
                 $snap_token = $order->snap_token;
                 $snap_redirect_url = $order->snap_redirect_url;
 

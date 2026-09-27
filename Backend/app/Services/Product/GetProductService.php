@@ -14,7 +14,8 @@ class GetProductService
             'product.id',
             'product.name',
             'product.description',
-            'product.quantity'
+            'product.quantity',
+            'product.pending_quantity',
         ])->get();
 
         return ResponseUtil::success($list_product);

@@ -2,6 +2,7 @@
 
 namespace App\Services\Order;
 
+use App\Enums\OrderStatusEnum;
 use App\Exceptions\BaseException;
 use App\Exceptions\ValidationException;
 use App\Http\Requests\Order\InsertOrderRequest;
@@ -35,7 +36,7 @@ class InsertOrderService
             $list_product = $request->validated('list_product');
 
             $order = Order::query()->create([
-                'id_order_status' => 1, // INITIATED
+                'id_order_status' => OrderStatusEnum::INITIATED->id(),
                 'customer_name' => $customer_name,
                 'customer_email' => $customer_email,
                 'customer_phone' => $customer_phone,
@@ -59,7 +60,8 @@ class InsertOrderService
                 }
 
                 $product->update([
-                    'quantity' => $product->quantity - $quantity
+                    'quantity' => $product->quantity - $quantity,
+                    'pending_quantity' => $product->pending_quantity += $quantity,
                 ]);
 
                 OrderDetail::query()->create([
@@ -113,7 +115,7 @@ class InsertOrderService
             $snap_redirect_url = $response['redirect_url'];
 
             $order->update([
-                'id_order_status' => 2, // PENDING
+                'id_order_status' => OrderStatusEnum::PENDING->id(),
                 'snap_token' => $snap_token,
                 'snap_redirect_url' => $snap_redirect_url,
             ]);
