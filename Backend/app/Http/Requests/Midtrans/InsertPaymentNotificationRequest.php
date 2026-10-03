@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Midtrans;
 
 use App\Exceptions\ValidationException;
+use App\Utils\MidtransUtil;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
@@ -26,14 +27,30 @@ class InsertPaymentNotificationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "order_id" => [ "required", "string", "exists:order,id" ],
-            "gross_amount" => [ "required", "numeric" ],
-            "payment_type" => [ "required", "string" ],
-            "transaction_id" => [ "required", "string" ],
             "transaction_time" => [ "required", "date_format:Y-m-d H:i:s" ],
             "transaction_status" => [ "required", "string" ],
-            "expiry_time" => [ "required", "date_format:Y-m-d H:i:s" ],
+            "transaction_id" => [ "required", "string" ],
+            "status_message" => [ "required", "string" ],
+            "status_code" => [ "required", "string" ],
+            "signature_key" => [ "required", "string" ],
+            "settlement_time" => [ "nullable", "date_format:Y-m-d H:i:s" ],
+            "payment_type" => [ "required", "string" ],
+            "order_id" => [ "required", "string", "exists:order,id" ],
+            "gross_amount" => [ "required", "numeric" ],
+            "fraud_status" => [ "sometimes", "nullable", "string", "in:accept,deny" ],
+            "currency" => [ "nullable", "string" ],
+            "expiry_time" => [ "nullable", "date_format:Y-m-d H:i:s" ],
         ];
+    }
+
+    protected function passedValidation(): void
+    {
+        MidtransUtil::verifyMidtransNotificationWebhookSignatureKey(
+            signature_key: $this->signature_key,
+            id_order: $this->order_id,
+            gross_amount: $this->gross_amount,
+            status_code: $this->status_code
+        );
     }
 
     /**

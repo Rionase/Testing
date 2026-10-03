@@ -2,6 +2,8 @@
 
 namespace App\Enums;
 
+use App\Exceptions\ValidationException;
+
 enum OrderStatusEnum: int
 {
     // id selalu perlu dicocokan dengan database tabel order_status
@@ -27,20 +29,50 @@ enum OrderStatusEnum: int
     public function label(): string
     {
         return match ($this) {
-            self::INITIATED => 'Initiated',
-            self::PENDING => 'Pending Payment',
-            self::AUTHORIZE => 'Authorized',
-            self::CAPTURE => 'Captured',
-            self::SETTLEMENT => 'Settlement Completed',
-            self::DENY => 'Denied',
-            self::CANCEL => 'Canceled',
-            self::EXPIRE => 'Expired',
-            self::FAILURE => 'Failed',
-            self::REFUND => 'Fully Refunded',
-            self::PARTIAL_REFUND => 'Partially Refunded',
-            self::CHARGEBACK => 'Chargeback',
-            self::PARTIAL_CHARGEBACK => 'Partially Chargebacked',
+            self::INITIATED => 'INITIATED',
+            self::PENDING => 'PENDING',
+            self::AUTHORIZE => 'AUTHORIZE',
+            self::CAPTURE => 'CAPTURE',
+            self::SETTLEMENT => 'SETTLEMENT',
+            self::DENY => 'DENY',
+            self::CANCEL => 'CANCEL',
+            self::EXPIRE => 'EXPIRE',
+            self::FAILURE => 'FAILED',
+            self::REFUND => 'REFUND',
+            self::PARTIAL_REFUND => 'PARTIAL_REFUND',
+            self::CHARGEBACK => 'CHARGEBACK',
+            self::PARTIAL_CHARGEBACK => 'PARTIAL_CHARGEBACK',
         };
+    }
+
+    /**
+     * @throws ValidationException
+     */
+    public static function idFromLabel(string $label): ?int
+    {
+        $label = strtoupper($label);
+
+        $map = [
+            'INITIATED'          => self::INITIATED,
+            'PENDING'            => self::PENDING,
+            'AUTHORIZE'          => self::AUTHORIZE,
+            'CAPTURE'            => self::CAPTURE,
+            'SETTLEMENT'         => self::SETTLEMENT,
+            'DENY'               => self::DENY,
+            'CANCEL'             => self::CANCEL,
+            'EXPIRE'             => self::EXPIRE,
+            'FAILURE'            => self::FAILURE,
+            'REFUND'             => self::REFUND,
+            'PARTIAL_REFUND'     => self::PARTIAL_REFUND,
+            'CHARGEBACK'         => self::CHARGEBACK,
+            'PARTIAL_CHARGEBACK' => self::PARTIAL_CHARGEBACK,
+        ];
+
+        if (!isset($map[$label])) {
+            throw new ValidationException('Order Status not found.');
+        }
+
+        return $map[$label]->id();
     }
 
 }

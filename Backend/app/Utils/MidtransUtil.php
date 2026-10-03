@@ -3,6 +3,7 @@
 namespace App\Utils;
 
 use App\Exceptions\BaseException;
+use App\Exceptions\ValidationException;
 use Exception;
 use Illuminate\Support\Facades\Http;
 use InvalidArgumentException;
@@ -262,6 +263,30 @@ class MidtransUtil
             if (empty($page_expiry['unit']) || !in_array($page_expiry['unit'], $valid_units, true)) {
                 throw new InvalidArgumentException("Field 'page_expiry.unit' must be one of the following: " . implode(', ', $valid_units));
             }
+        }
+    }
+
+
+    /**
+     * Midtrans Documentation: https://docs.midtrans.com/docs/https-notification-webhooks#verifying-signature-key
+     * Beware id_order and gross_amount from midtrans POST body request shouldn't be int
+     *
+     * @param string $signature_key
+     * @param string $id_order
+     * @param string $gross_amount
+     * @param string $status_code
+     * @return void
+     * @throws ValidationException
+     */
+    static public function verifyMidtransNotificationWebhookSignatureKey(string $signature_key, string $id_order, string $gross_amount, string $status_code): void
+    {
+        $midtrans_server_key = env('MIDTRANS_SERVER_KEY');
+
+        $string = $id_order . $status_code . $gross_amount . $midtrans_server_key;
+        $hash_string = hash("sha512", $string);
+
+        if (!hash_equals($hash_string, $signature_key)) {
+            throw new ValidationException('Signature Key not valid.');
         }
     }
 }
