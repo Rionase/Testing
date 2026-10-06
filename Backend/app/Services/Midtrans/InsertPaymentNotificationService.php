@@ -35,6 +35,7 @@ class InsertPaymentNotificationService
 
             $order = Order::query()->findOrFail($id_order);
 
+            $beforeStatusInitiated = $order->id_order_status == OrderStatusEnum::INITIATED->id();
             $beforeStatusPending = $order->id_order_status == OrderStatusEnum::PENDING->id();
             $beforeStatusCapture = $order->id_order_status == OrderStatusEnum::CAPTURE->id();
             $beforeStatusSettlement = $order->id_order_status == OrderStatusEnum::SETTLEMENT->id();
@@ -56,11 +57,14 @@ class InsertPaymentNotificationService
                 throw new ValidationException('Fraud Status must have accept value.');
             }
 
-            if ($beforeStatusPending && $afterStatusPending) {
-                // PENDING -> PENDING
+            if ($beforeStatusInitiated && $afterStatusPending) {
+                // INITIATED -> PENDING
                 // Perlu update order.expired_at karena setelah memilih metode pembayaran,
                 // waktu expired akan berubah menjadi env(MIDTRANS_PAYMENT_EXPIRY_DURATION_MINUTES) menit semenjak metode pembayaran dipilih
-                $order->update([ 'expired_at' => $expiry_time ]);
+                $order->update([
+                    'id_order_status' => OrderStatusEnum::PENDING->id(),
+                    'expired_at' => $expiry_time
+                ]);
 
             } else if (($beforeStatusAuthorize && $afterStatusCapture) || ($beforeStatusPending && $afterStatusSettlement)) {
                 // PENDING -> SETTLEMENT || AUTHORIZE -> CAPTURE

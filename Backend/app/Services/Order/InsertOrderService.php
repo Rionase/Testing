@@ -115,7 +115,7 @@ class InsertOrderService
             $snap_redirect_url = $response['redirect_url'];
 
             $order->update([
-                'id_order_status' => OrderStatusEnum::PENDING->id(),
+                'id_order_status' => OrderStatusEnum::INITIATED->id(),
                 'snap_token' => $snap_token,
                 'snap_redirect_url' => $snap_redirect_url,
             ]);

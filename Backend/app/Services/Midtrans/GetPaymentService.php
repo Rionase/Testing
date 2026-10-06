@@ -27,7 +27,8 @@ class GetPaymentService
         try {
 
             $order = Order::query()->where('id', $id_order)->firstOrFail();
-            $order_status_name = $order->orderStatus->name;
+            $id_order_status = $order->orderStatus->id;
+            $name_order_status = $order->orderStatus->name;
 
             $now = now();
             if (!is_null($order->payment_time)) {
@@ -36,12 +37,12 @@ class GetPaymentService
             } else if ($now > $order->expired_at) {
                 throw new ValidationException('Order has expired.');
 
-            } else if ($order->orderStatus->name == OrderStatusEnum::PENDING->label()) {
+            } else if ($id_order_status == OrderStatusEnum::INITIATED->id() || $id_order_status == OrderStatusEnum::PENDING->id()) {
                 $snap_token = $order->snap_token;
                 $snap_redirect_url = $order->snap_redirect_url;
 
             } else {
-                throw new ValidationException("Unable to do payment on $order_status_name status.");
+                throw new ValidationException("Unable to do payment on $name_order_status status.");
             }
 
             return ResponseUtil::success(data: [
