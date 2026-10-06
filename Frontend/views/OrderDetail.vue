@@ -8,7 +8,7 @@
                 </button>
                 <div class="title-with-badge">
                     <h2>Order #{{ order.id }}</h2>
-                    <OrderStatusBadge :status="order.order_status_name" />
+                    <OrderStatusBadge :status="order.order_status_name" :isCustomerStatus="true"  />
                 </div>
                 <p class="subtitle">Created on {{ formatDate(order.created_at) }}</p>
             </div>
@@ -152,6 +152,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { fetchApi } from "../utils/ApiUtils.js";
 import { formatDate } from "../utils/DatetimeUtils.js";
 import OrderStatusBadge from "../components/OrderStatusBadge.vue";
+import {CustomerOrderStatus, OrderStatus} from "@/enums/OrderStatus.js";
 
 const route = useRoute();
 const router = useRouter();
@@ -164,7 +165,7 @@ const isProcessingPayment = ref(false);
 // Cek apakah order berstatus INITIATED atau PENDING
 const canPay = computed(() => {
     const status = order.value.order_status_name?.toUpperCase();
-    return status === 'INITIATED' || status === 'PENDING';
+    return status === CustomerOrderStatus.PENDING_PAYMENT;
 });
 
 // Fetch Detail Data

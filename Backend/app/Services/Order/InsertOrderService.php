@@ -61,7 +61,7 @@ class InsertOrderService
 
                 $product->update([
                     'quantity' => $product->quantity - $quantity,
-                    'pending_quantity' => $product->pending_quantity += $quantity,
+                    'lock_quantity' => $product->lock_quantity += $quantity,
                 ]);
 
                 OrderDetail::query()->create([

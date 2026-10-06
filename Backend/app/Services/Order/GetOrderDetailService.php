@@ -17,7 +17,7 @@ class GetOrderDetailService
         $order = Order::query()->select([
                 'order.id',
                 'order.id_order_status',
-                'order_status.name AS order_status_name',
+                'order_status.customer_status_name AS order_status_name',
                 'order.customer_name',
                 'order.customer_email',
                 'order.customer_phone',

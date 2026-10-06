@@ -12,7 +12,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $description
  * @property int $price
  * @property int $quantity
- * @property int $pending_quantity
+ * @property int $lock_quantity
+ * @property int $shipped_quantity
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property Carbon $deleted_at
@@ -28,6 +29,7 @@ class Product extends Model
         'description',
         'price',
         'quantity',
-        'pending_quantity',
+        'lock_quantity',
+        'shipped_quantity'
     ];
 }

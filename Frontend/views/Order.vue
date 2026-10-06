@@ -27,7 +27,7 @@
                         <td>{{ order.customer_email }}</td>
                         <td>{{ order.customer_phone }}</td>
                         <td>
-                            <OrderStatusBadge :status="order.order_status_name" />
+                            <OrderStatusBadge :status="order.order_status_name" :isCustomerStatus="true" />
                         </td>
                         <td>{{ order.total_price }}</td>
                         <td>{{ formatDate(order.created_at) }}</td>

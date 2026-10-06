@@ -9,17 +9,20 @@ enum OrderStatusEnum: int
     // id selalu perlu dicocokan dengan database tabel order_status
     case INITIATED = 1;
     case PENDING = 2;
-    case AUTHORIZE = 3;
-    case CAPTURE = 4;
-    case SETTLEMENT = 5;
-    case DENY = 6;
-    case CANCEL = 7;
-    case EXPIRE = 8;
-    case FAILURE = 9;
-    case REFUND = 10;
+    case CAPTURE = 3;
+    case SETTLEMENT = 4;
+    case DENY = 5;
+    case CANCEL = 6;
+    case EXPIRE = 7;
+    case FAILURE = 8;
+    case REFUND = 9;
+    case CHARGEBACK = 10;
     case PARTIAL_REFUND = 11;
-    case CHARGEBACK = 12;
-    case PARTIAL_CHARGEBACK = 13;
+    case PARTIAL_CHARGEBACK = 12;
+    case AUTHORIZE = 13;
+    case ON_DELIVERY = 14;
+    case FINISHED = 15;
+
 
     public function id(): int
     {
@@ -31,17 +34,19 @@ enum OrderStatusEnum: int
         return match ($this) {
             self::INITIATED => 'INITIATED',
             self::PENDING => 'PENDING',
-            self::AUTHORIZE => 'AUTHORIZE',
             self::CAPTURE => 'CAPTURE',
             self::SETTLEMENT => 'SETTLEMENT',
             self::DENY => 'DENY',
             self::CANCEL => 'CANCEL',
             self::EXPIRE => 'EXPIRE',
-            self::FAILURE => 'FAILED',
+            self::FAILURE => 'FAILURE',
             self::REFUND => 'REFUND',
-            self::PARTIAL_REFUND => 'PARTIAL_REFUND',
             self::CHARGEBACK => 'CHARGEBACK',
+            self::PARTIAL_REFUND => 'PARTIAL_REFUND',
             self::PARTIAL_CHARGEBACK => 'PARTIAL_CHARGEBACK',
+            self::AUTHORIZE => 'AUTHORIZE',
+            self::ON_DELIVERY => 'ON_DELIVERY',
+            self::FINISHED => 'FINISHED',
         };
     }
 
@@ -55,7 +60,6 @@ enum OrderStatusEnum: int
         $map = [
             'INITIATED'          => self::INITIATED,
             'PENDING'            => self::PENDING,
-            'AUTHORIZE'          => self::AUTHORIZE,
             'CAPTURE'            => self::CAPTURE,
             'SETTLEMENT'         => self::SETTLEMENT,
             'DENY'               => self::DENY,
@@ -63,9 +67,12 @@ enum OrderStatusEnum: int
             'EXPIRE'             => self::EXPIRE,
             'FAILURE'            => self::FAILURE,
             'REFUND'             => self::REFUND,
-            'PARTIAL_REFUND'     => self::PARTIAL_REFUND,
             'CHARGEBACK'         => self::CHARGEBACK,
+            'PARTIAL_REFUND'     => self::PARTIAL_REFUND,
             'PARTIAL_CHARGEBACK' => self::PARTIAL_CHARGEBACK,
+            'AUTHORIZE'          => self::AUTHORIZE,
+            'ON_DELIVERY'        => self::ON_DELIVERY,
+            'FINISHED'           => self::FINISHED,
         ];
 
         if (!isset($map[$label])) {

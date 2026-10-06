@@ -28,6 +28,7 @@ INSERT INTO product (id, name, description, price, quantity, lock_quantity, ship
 
 CREATE TABLE order_status (
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    customer_status_name VARCHAR(64) NOT NULL,
     name VARCHAR(64) NOT NULL,
     is_midtrans_status BOOLEAN NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -49,7 +50,7 @@ INSERT INTO order_status (id, customer_status_name, name, is_midtrans_status, cr
 ( 11, 'PARTIALLY REFUNDED', 'PARTIAL_REFUND', TRUE, NOW(), NOW(), NULL ),
 ( 12, 'PARTIALLY REFUNDED', 'PARTIAL_CHARGEBACK', TRUE, NOW(), NOW(), NULL ),
 ( 13, 'PENDING PAYMENT', 'AUTHORIZE', TRUE, NOW(), NOW(), NULL ),
-( 14, 'ON DELIVERY', 'ON DELIVERY', FALSE, NOW(), NOW(), NULL ),
+( 14, 'ON DELIVERY', 'ON_DELIVERY', FALSE, NOW(), NOW(), NULL ),
 ( 15, 'COMPLETED', 'FINISHED', FALSE, NOW(), NOW(), NULL );
 
 
@@ -76,7 +77,7 @@ CREATE TABLE `order` (
     CONSTRAINT fk_order_order_status FOREIGN KEY (id_order_status) REFERENCES order_status(id) ON UPDATE RESTRICT ON DELETE RESTRICT
 );
 
-ALTER TABLE `order` AUTO_INCREMENT = 58;
+ALTER TABLE `order` AUTO_INCREMENT = 62;
 
 
 

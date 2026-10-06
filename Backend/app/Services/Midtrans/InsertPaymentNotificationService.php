@@ -86,7 +86,7 @@ class InsertPaymentNotificationService
                 // PENDING || CAPTURE || AUTHORIZE -> CANCEL
                 // PENDING || AUTHORIZE -> EXPIRE
                 // OTHER THAN DENY || CANCEL || EXPIRE || FAILURE -> FAILURE
-                // Revert product.quantity dan product.pending_quantity
+                // Revert product.quantity dan product.lock_quantity
                 $order->update([
                     'id_order_status' => OrderStatusEnum::idFromLabel($transaction_status),
                 ]);
@@ -96,7 +96,7 @@ class InsertPaymentNotificationService
                     $product = Product::query()->findOrFail($order_detail->id_product);
                     $product->update([
                         'quantity' => $product->quantity + $order_detail->quantity,
-                        'pending_quantity' => $product->pending_quantity - $order_detail->quantity
+                        'lock_quantity' => $product->lock_quantity - $order_detail->quantity
                     ]);
                 }
 
