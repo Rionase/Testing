@@ -149,9 +149,9 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { fetchApi } from "../utils/ApiUtils.js";
-import { formatDate } from "../utils/DatetimeUtils.js";
-import OrderStatusBadge from "../components/OrderStatusBadge.vue";
+import { fetchApi } from "@/utils/ApiUtils.js";
+import { formatDate } from "@/utils/DatetimeUtils.js";
+import OrderStatusBadge from "@/components/OrderStatusBadge.vue";
 import {CustomerOrderStatus, OrderStatus} from "@/enums/OrderStatus.js";
 
 const route = useRoute();

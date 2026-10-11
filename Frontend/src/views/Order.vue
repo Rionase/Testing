@@ -41,9 +41,9 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { fetchApi } from "../utils/ApiUtils.js";
-import {formatDate} from "../utils/DatetimeUtils.js";
-import OrderStatusBadge from "../components/OrderStatusBadge.vue";
+import { fetchApi } from "@/utils/ApiUtils.js";
+import {formatDate} from "@/utils/DatetimeUtils.js";
+import OrderStatusBadge from "@/components/OrderStatusBadge.vue";
 
 const orders = ref([]);
 

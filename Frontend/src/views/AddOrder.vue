@@ -248,7 +248,7 @@
 
 <script setup>
 import { ref, reactive, computed, onMounted } from 'vue';
-import { fetchApi } from "../utils/ApiUtils.js";
+import { fetchApi } from "@/utils/ApiUtils.js";
 import router from "@/router.js";
 
 const availableProducts = ref([]);

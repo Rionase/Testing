@@ -27,7 +27,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { fetchApi } from "../utils/ApiUtils.js";
+import { fetchApi } from "@/utils/ApiUtils.js";
 
 const products = ref([]);
 

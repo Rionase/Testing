@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Product from "../views/Product.vue";
-import Order from "../views/Order.vue";
-import AddOrder from "../views/AddOrder.vue";
-import OrderDetail from "../views/OrderDetail.vue";
+import Product from "@/views/Product.vue";
+import Order from "@/views/Order.vue";
+import AddOrder from "@/views/AddOrder.vue";
+import OrderDetail from "@/views/OrderDetail.vue";
 
 const routes = [
     {
